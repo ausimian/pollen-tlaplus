@@ -1,5 +1,5 @@
 #lang racket/base
 
-(require "tlaplus.rkt")
+(require "tags.rkt")
 
-(provide (all-from-out "tlaplus.rkt"))
+(provide (all-from-out "tags.rkt"))
