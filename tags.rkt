@@ -35,21 +35,21 @@
                                                   ))
 
 (define tla-keywords '("MODULE"
-                   "EXTENDS"
-                   "CONSTANT" "CONSTANTS"
-                   "VARIABLE" "VARIABLES"
-                   "ASSUME"
-                   "INSTANCE" "WITH"
-                   "THEOREM" "LEMMA" "PROOF" "BY"
-                   "LET" "IN"
-                   "EXCEPT"
-                   "BOOLEAN" "TRUE" "FALSE"
-                   "IF" "THEN" "ELSE"
-                   "CHOOSE"
-                   "CASE" "OTHER"
-                   "ENABLED" "UNCHANGED"
-                   "DOMAIN" "SUBSET" "UNION"
-                   "STRING"))
+                       "EXTENDS"
+                       "CONSTANT" "CONSTANTS"
+                       "VARIABLE" "VARIABLES"
+                       "ASSUME"
+                       "INSTANCE" "WITH"
+                       "THEOREM" "LEMMA" "PROOF" "BY"
+                       "LET" "IN"
+                       "EXCEPT"
+                       "BOOLEAN" "TRUE" "FALSE"
+                       "IF" "THEN" "ELSE"
+                       "CHOOSE"
+                       "CASE" "OTHER"
+                       "ENABLED" "UNCHANGED"
+                       "DOMAIN" "SUBSET" "UNION"
+                       "STRING"))
 
 (define (alt-parsers lst)
   (map (compose try/p string/p) (sort lst by-decreasing-length)))
