@@ -93,6 +93,22 @@
       [rb <- (string/p ">>")]
     (pure (string-join (list lb (list->string tu) rb) ""))))
 
+(define hdr/p
+  (do [repeat/p 4 (char/p #\=)]
+      [many/p (char/p #\=)]
+      space/p
+      [string/p "MODULE"]
+      space/p
+      [mod <- alnum/p]
+      space/p
+      [many+/p (char/p #\=)]
+    (pure (cons 'mod mod))))
+
+(define ftr/p
+  (do [repeat/p 4 (char/p #\=)]
+      [many/p (char/p #\=)]
+    (pure (cons 'mod #f))))
+
 (define stok/p
   (do [many/p space/p]
       [or/p (try/p (syntax-box/p symbol/p))
@@ -114,7 +130,9 @@
 
 (define ttok/p
   (do [many/p space/p]
-      [or/p (try/p (syntax-box/p symbol/p))
+      [or/p (try/p (syntax-box/p hdr/p))
+            (try/p (syntax-box/p ftr/p))
+            (try/p (syntax-box/p symbol/p))
             (try/p (syntax-box/p subscript/p))
             (try/p (syntax-box/p punct/p))
             (try/p (syntax-box/p keyword/p))
@@ -149,8 +167,21 @@
 (define ldquo (string->symbol "ldquo"))
 (define rdquo (string->symbol "rdquo"))
 
+(define (module-header mod)
+  `(div ((class "module-header"))
+        (div ((class "left")))
+        (div (span (span ((class "tla-kwd")) "MODULE") nbsp (i ,mod)))
+        (div ((class "right")))))
+
+(define module-footer
+  '(div ((class "module-footer"))
+        (div ((class "left")))
+        (div ((style "height: 1em;")))
+        (div ((class "right")))))
+
 (define (token->html token)
   (match (syntax-box-datum token)
+    [ `(mod . ,mod)        (if mod (module-header mod) module-footer)]
     [ `(id  . ,identifier) `(i ,identifier)]
     [ `(sym . ,symbol)      (hash-ref tla-symbols symbol)]
     [ `(num . ,n)           n]
